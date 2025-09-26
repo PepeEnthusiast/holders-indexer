@@ -1,0 +1,12 @@
+{
+  "compilerOptions": {
+    "target": "es2020",            // Modern JS version
+    "module": "commonjs",          // Or "esnext" if using ES modules
+    "rootDir": "src",              // Where your TS files live
+    "outDir": "dist",              // Where compiled JS goes
+    "strict": true,                // Enable strict type-checking
+    "esModuleInterop": true,       // Allow default imports from CommonJS
+    "skipLibCheck": true,
+    "noImplicitAny": true
+  }
+}
