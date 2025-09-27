@@ -9,10 +9,14 @@ const PORT = 4000;
 
 let shuttingDown = false;
 
-process.on("SIGINT", async () => {
-    console.log("\nCaught SIGINT. Waiting for current batch to finish...");
+async function gracefulShutdown(signal: string) {
+    if (shuttingDown) return;
+    console.log(`\nCaught ${signal}. Waiting for current batch to finish...`);
     shuttingDown = true;
-});
+}
+
+process.on("SIGINT", () => gracefulShutdown("SIGINT"));
+process.on("SIGTERM", () => gracefulShutdown("SIGTERM"));
 
 export type AddressBalanceDelta = {
     address: string;

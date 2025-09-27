@@ -41,7 +41,6 @@ services:
       - "4000:4000"
     volumes:
       - holders_data:/app/data/
-    command: npm start
 
 volumes:
   core_data:

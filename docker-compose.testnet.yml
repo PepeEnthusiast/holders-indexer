@@ -1,4 +1,4 @@
-name: pepecoin-mainnet
+name: pepecoin-testnet
 
 services:
   core:
@@ -43,7 +43,6 @@ services:
       - "4001:4000"
     volumes:
       - holders_data:/app/data/
-    command: npm start
 
 volumes:
   core_data:
