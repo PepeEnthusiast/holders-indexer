@@ -22,7 +22,7 @@ GET /addresses?page=1&limit=100
 **Query Parameters:**
 
 * `page` - (optional) Page number for pagination (default: 1)
-* `limit` - (optional) Number of results per page (default: 50)
+* `limit` - (optional) Number of results per page (default: 10)
 
 **Example Response:**
 
