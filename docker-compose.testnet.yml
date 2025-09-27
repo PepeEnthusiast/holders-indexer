@@ -25,7 +25,7 @@ services:
       --address-search
       --index-unspendables
       --rest-default-chain-txs-per-page 10
-      --daemon-rpc-addr core:33873
+      --daemon-rpc-addr core:44873
       --daemon-dir /.pepecoin
       --cookie rpc:rpcp
       --db-dir /electrs
