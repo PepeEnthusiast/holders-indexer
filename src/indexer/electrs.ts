@@ -7,7 +7,7 @@ export class TxStatus {
 }
 
 export class TxVout {
-    value!: number;
+    value!: bigint;
     scriptpubkey_address?: string;
 }
 

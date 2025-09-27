@@ -15,7 +15,7 @@ export class Rest {
     listen() {
         app.get("/", async (_, res) => {
             try {
-                const indexerHeight = this.db.getLastHeight();
+                const indexerHeight = await this.db.getLastHeight();
                 try {
                     const electrsHeight = await this.electrs.getTipHeight();
                     res.json({ electrs_height: electrsHeight, indexer_height: indexerHeight });

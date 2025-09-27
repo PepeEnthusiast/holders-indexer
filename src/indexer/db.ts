@@ -44,7 +44,7 @@ export class DB {
       if (!balancesExists) {
         await this.db.schema.createTable("balances", table => {
           table.text("address").primary();
-          table.text("balance").notNullable(); // store bigint as string
+          table.bigInteger("balance").notNullable();
         });
 
         // Create index for sorting by balance descending
@@ -84,14 +84,21 @@ export class DB {
         if (deltas.length !== 0) {
           // Apply balance deltas
           for (const { address, delta } of deltas) {
-            await trx("balances")
-              .insert({ address, balance: delta.toString() })
-              .onConflict("address")
-              .merge({ balance: this.db.raw("balance + ?", [delta.toString()]) });
-
             const row = await trx("balances").first("balance").where({ address });
-            if (row && BigInt(row.balance) === 0n) {
+            const current = row ? BigInt(row.balance) : 0n;
+            const updated = current + delta;
+
+            if (updated < 1000n) {
               await trx("balances").where({ address }).del();
+            } else if (row) {
+              await trx("balances")
+                .where({ address })
+                .update({ balance: updated.toString() });
+            } else {
+              await trx("balances").insert({
+                address,
+                balance: updated.toString(),
+              });
             }
           }
         }
