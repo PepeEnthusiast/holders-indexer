@@ -2,18 +2,12 @@ import { AddressBalanceDelta, mergeDeltas, sumDeltas } from '../delta';
 import { plainToInstance } from 'class-transformer';
 import fetch from 'node-fetch';
 
-export class TxStatus {
-    block_height!: number;
-}
-
 export class TxVout {
     value!: bigint;
     scriptpubkey_address?: string;
 }
 
 export class TxVin {
-    txid!: string;
-    vout!: number;
     prevout?: TxVout;
 }
 
@@ -21,7 +15,6 @@ export class Tx {
     txid!: string;
     vin!: TxVin[];
     vout!: TxVout[];
-    status!: TxStatus;
 
     extractTxDeltas(): AddressBalanceDelta[] {
         const outputDeltas = this.extractOutputDeltas();
@@ -97,19 +90,6 @@ export class ElectRS {
             return plainToInstance(Tx, txs as object[]);
         } catch (err) {
             throw new Error(`Failed to get transactions for block ${blockHash}: ${(err as Error).message}`);
-        }
-    }
-
-    async getAddressBalance(address: string): Promise<bigint> {
-        try {
-            const res = await fetch(`${this.url}/address/${address}`);
-            if (!res.ok) throw new Error(`HTTP ${res.status}`);
-            const info = await res.json() as any;
-            const funded = BigInt(info.chain_stats?.funded_txo_sum || 0);
-            const spent = BigInt(info.chain_stats?.spent_txo_sum || 0);
-            return funded - spent;
-        } catch (err) {
-            throw new Error(`Failed to get balance for address ${address}: ${(err as Error).message}`);
         }
     }
 }

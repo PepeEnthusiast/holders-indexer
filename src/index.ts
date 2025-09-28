@@ -11,13 +11,13 @@ const config = Config.load();
 const database = new DB("./data/index.db");
 const electrs = new ElectRS(config.electrsUrl);
 const indexer = new Indexer(config, database, electrs);
-const rest = new Rest(indexer, database, electrs);
+const rest = new Rest(database, electrs);
 
 setupTerminationHandler(async () => rest.close());
 
 (async () => {
     await database.initSchema();
-    rest.listen();
+    rest.listen(config.httpPort);
     await indexer.start();
     console.log("holders-indexer exited.");
 })();

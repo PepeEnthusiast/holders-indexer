@@ -70,14 +70,6 @@ export class DB {
     }
   }
 
-  async setLastHeight(height: number): Promise<void> {
-    try {
-      await this.db("progress").where({ id: 1 }).update({ last_height: height });
-    } catch (err) {
-      throw new Error(`Failed to set last height to ${height}: ${(err as Error).message}`);
-    }
-  }
-
   async insertDeltas(deltas: AddressBalanceDelta[], newHeight: number): Promise<void> {
     try {
       await this.db.transaction(async trx => {

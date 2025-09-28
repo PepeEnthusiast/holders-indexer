@@ -1,18 +1,16 @@
+import express from "express";
 import { Server } from "http";
 import { DB } from "./indexer/db";
-import express, { response } from "express";
-import { Indexer } from "./indexer/indexer";
 import { ElectRS } from "./indexer/electrs";
 
 const app = express();
-const PORT = 4000;
 
 export class Rest {
     private server: Server | null = null;
 
-    constructor(private indexer: Indexer, private db: DB, private electrs: ElectRS) { }
+    constructor(private db: DB, private electrs: ElectRS) { }
 
-    listen() {
+    listen(port: number) {
         app.get("/", async (_, res) => {
             try {
                 const indexerHeight = await this.db.getLastHeight();
@@ -39,7 +37,7 @@ export class Rest {
             }
         });
 
-        this.server = app.listen(PORT, () => console.log(`REST API running at http://localhost:${PORT}`));
+        this.server = app.listen(port, () => console.log(`REST API running at http://localhost:${port}`));
     }
 
     close() {
