@@ -39,8 +39,9 @@ services:
       dockerfile: Dockerfile
     environment:
       - ELECTRS_URL=http://electrs:3000
+      - HTTP_PORT=4001
     ports:
-      - "4001:4000"
+      - "4001:4001"
     volumes:
       - holders_data:/app/data/
 
